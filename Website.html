@@ -5,15 +5,23 @@
   var u = navigator.userAgent;
   var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
   var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-	if(isAndroid){alert('是否是Android：'+isAndroid);}
-  //alert('是否是iOS：'+isiOS);
-</script>
-<title>AR Library</title>
-</head>
-
-<body>
-	<h1>Welcome to the AR Library</h1>
-	<p>Welcome to the AR Library website. I created this website in order to view AR objects from the web on any device running iOS 12. Conincidentally, this is the first time I made a website with HTML! It's a lot of fun! You can find the whole tutorial here: https://www.appcoda.com/arkit-quick-look/</p>
+	if(isAndroid){
+		alert('是否是Android：'+isAndroid);
+		<title>AR Android</title></head>
+			<body>
+			<h1>Android</h1>
+		<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>
+<script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
+<model-viewer src="blasterA.glb" alt="A 3D model of an astronaut" 
+auto-rotate camera-controls ar background-color="#455A64" poster="egg.png"></model-viewer>
+	</body>
+	</script>
+	}
+		if(isiOS){
+		alert('是否是iOS：'+isiOS);
+		<title>AR ios</title></head>
+			<body>
+			<h1>ios</h1>
 	<a href="egg.usdz" rel="ar">
 		
 		<img src="egg.png" width=200>
@@ -40,5 +48,6 @@
 	</a><a href="wateringcan.usdz" rel="ar">
 		<img src="wateringcan.png" width=200>
 	</a>
-</body>
+	}
+</script>
 </html>
