@@ -8,6 +8,8 @@
 <script src="bulid/ar.js"></script>
 <script src="bulid/MTLLoader.js"></script>
 <script src="bulid/OBJLoader.js"></script>
+<script src="bulid/GLTFLoader.js"></script>
+
 
 <style>
 </style>
@@ -173,28 +175,22 @@
 
 
         var onError = function ( xhr ) { };
-        var mtlLoader = new THREE.MTLLoader();
-        mtlLoader.setPath( 'obj/' );
-        mtlLoader.load( 'jj.mtl', function( materials ) {
+			var loader = new GLTFLoader();
+		
+			loader.load( 'obj/LittlestTokyo.glb', function ( gltf ) {
 
-            materials.preload();
+				var model = gltf.scene;
+				model.position.set( 1, 1, 0 );
+				model.scale.set( 0.01, 0.01, 0.01 );
 
-            var objLoader = new THREE.GLTFLoader();
+				scene.add( model );
 
-            objLoader.setMaterials( materials );
 
-            objLoader.setPath( 'obj/' );
+			}, undefined, function ( e ) {
 
-            objLoader.load( 'LittlestTokyo.glb', function ( object ) {
+				console.error( e );
 
-                obj=object;
-                scene.add( object );
-                object.position.set(0,0,0);
-                object.scale.set(0.00001,0.00001,0.00001);
-                var axes=new THREE.AxisHelper(10);
-                scene.add(axes);
-            }, onProgress, onError );
-        });
+			} );
 
 
 </script></body>
