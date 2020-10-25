@@ -174,13 +174,7 @@
 
         var onError = function ( xhr ) { };
 
-        var mtlLoader = new THREE.MTLLoader();
-
-        mtlLoader.setPath( 'obj/' );
-
-        mtlLoader.load( 'jj.mtl', function( materials ) {
-
-            materials.preload();
+      
 		
             var objLoader = new THREE.GLTFLoader();
 
@@ -191,9 +185,9 @@
             objLoader.load( 'LittlestTokyo.glb', function ( object ) {
 
                 obj=object;
-                scene.add( object );
-                object.position.set(0,0,0);
-                object.scale.set(0.00001,0.00001,0.00001);
+                scene.add( object.scene);
+                object.position.set(1,1,0);
+                object.scale.set(0.01,0.01,0.01);
                 var axes=new THREE.AxisHelper(10);
                 scene.add(axes);
             }, onProgress, onError );
