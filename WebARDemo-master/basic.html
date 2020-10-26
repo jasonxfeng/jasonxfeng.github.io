@@ -182,11 +182,12 @@
 			loader.load( 'obj/LittlestTokyo.glb', function ( gltf ) {
 
 				var model = gltf.scene;
-				model.position.set( 1, 1, 0 );
-				model.scale.set( 0.01, 0.01, 0.01 );
+				gltf.position.set( 1, 1, 0 );
+				gltf.scale.set( 0.01, 0.01, 0.01 );
 
 				scene.add( model );
-
+               var axes=new THREE.AxisHelper(10);
+                scene.add(axes);
 
 			}, onProgress,  onError);
 	
