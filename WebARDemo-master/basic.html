@@ -21,6 +21,7 @@
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
+	<p id="p1">？？？？？？？？</p>
 <script>
         var obj;
 	//fps监测
@@ -182,6 +183,7 @@
 			var loader = new THREE.GLTFLoader();
 			loader.setDRACOLoader( dracoLoader );
 			loader.load( 'obj/LittlestTokyo.glb', function ( gltf ) {
+				document.getElementById("p1").innerHTML = "gltf loader";
                 var axes=new THREE.AxisHelper(10);
                 scene.add(axes);
 				var model = gltf.scene;
