@@ -19,6 +19,7 @@
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
+	<p id="p1">"1111111"</p>
 <script>
         var obj;
 	//fps监测
@@ -160,6 +161,7 @@
 */
 	
         var onProgress = function ( xhr ) {
+		document.getElementById("p1").innerHTML = "progreess";
 
             if ( xhr.lengthComputable ) {
 
@@ -173,7 +175,7 @@
 
 
 
-        var onError = function ( xhr ) { };
+        var onError = function ( xhr ) { document.getElementById("p1").innerHTML = "ONERROR";};
 
         var mtlLoader = new THREE.MTLLoader();
 
@@ -190,7 +192,7 @@
             objLoader.setPath( 'obj/' );
 
             objLoader.load( 'jj.obj', function ( object ) {
-
+document.getElementById("p1").innerHTML = "gltf loader";
                 obj=object;
                 scene.add( object );
                 object.position.set(0,0,0);
