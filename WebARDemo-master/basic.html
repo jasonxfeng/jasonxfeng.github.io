@@ -162,6 +162,7 @@
 
 
         var onProgress = function ( xhr ) {
+		document.getElementById("p1").innerHTML = "progreess";
 
             if ( xhr.lengthComputable ) {
 
@@ -175,7 +176,9 @@
 
 
 
-        var onError = function ( xhr ) { };
+        var onError = function ( xhr ) {
+	document.getElementById("p1").innerHTML = "ONERROR";
+	};
 
 			var dracoLoader = new THREE.DRACOLoader();
 			dracoLoader.setDecoderPath( 'bulid/gltf/' );
