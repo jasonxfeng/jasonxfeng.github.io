@@ -135,8 +135,8 @@ function initialize()
 		loader.load( 'blasterA.glb', function ( gltf ) {
 
 			var model = gltf.scene;
-			model.position.set( 1, 1, 0 );
-			model.scale.set( 0.01, 0.01, 0.01 );
+			model.position.set( 0, 0, 0 );
+			model.scale.set( 1, 1, 1 );
 	        markerRoot1.add( model );
 			/*
 		mixer = new THREE.AnimationMixer( model );
