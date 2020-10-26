@@ -184,10 +184,10 @@
 	document.getElementById("p1").innerHTML = "ONERROR";
 	};
 
-			var dracoLoader = new DRACOLoader();
+			var dracoLoader = new THREE.DRACOLoader();
 			dracoLoader.setDecoderPath( 'bulid/gltf/' );
 
-			var loader = new GLTFLoader();
+			var loader = new THREE.GLTFLoader();
 			loader.setDRACOLoader( dracoLoader );
 			loader.load( 'obj/LittlestTokyo.glb', function ( gltf ) {
 				document.getElementById("p1").innerHTML = "gltf loader";
