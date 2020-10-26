@@ -128,10 +128,11 @@ function initialize()
 	function onError(xhr) { console.log( 'An error happened' ); }
 	
 	
-                 var loader = new GLTFLoader().setPath( 'obj/' );
-		loader.load( 'LittlestTokyo.glb', function ( gltf ) {
+                 var loader = new TGLTFLoader().setPath( 'obj/' );
+		loader.load( 'LittlestTokyo.glb', function ( group ) {
 
 			var model = gltf.scene;
+			model = group.children[0];
 			model.position.set( 1, 1, 0 );
 			model.scale.set( 0.01, 0.01, 0.01 );
 	        markerRoot1.add( model );
