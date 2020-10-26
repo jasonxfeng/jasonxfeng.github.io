@@ -128,6 +128,8 @@ function initialize()
 	function onProgress(xhr) { console.log( (xhr.loaded / xhr.total * 100) + '% loaded' ); }
 	function onError(xhr) { console.log( 'An error happened' ); }
 	
+	
+	/*
 		var dracoLoader = new THREE.DRACOLoader();
 		dracoLoader.setDecoderPath( 'bulid/gltf/' );
                  var loader = new THREE.GLTFLoader().setPath( 'obj/' );
@@ -143,10 +145,27 @@ function initialize()
 		mixer.clipAction( gltf.animations[ 0 ] ).play();
 		animate();
 		*/
+	/*
 		render();
 
 
 							}, onProgress, onError );
+	*/
+	new THREE.MTLLoader()
+		.setPath( 'obj/' )
+		.load( 'jj.mtl', function ( materials ) {
+			materials.preload();
+			new THREE.OBJLoader()
+				.setMaterials( materials )
+				.setPath( 'obj/' )
+				.load( 'jj.obj', function ( group ) {
+					mesh0 = group.children[0];
+					mesh0.material.side = THREE.DoubleSide;
+					mesh0.position.y = 0.25;
+					mesh0.scale.set(0.25,0.25,0.25);
+					markerRoot1.add(mesh0);
+				}, onProgress, onError );
+		});
 	
 }
 
