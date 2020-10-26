@@ -6,7 +6,7 @@
 	<script src='bulid/three.js'></script>
 	<script src='bulid/OBJLoader.js'></script>
 	<script src='bulid/MTLLoader.js'></script>
-	<script src="bulid/GLTFLoader.js"></script>
+	
 	<!-- include jsartookit -->
 	<script src="bulid/artoolkit.min.js"></script>
 	<script src="bulid/artoolkit.api.js"></script>
@@ -25,6 +25,8 @@
 -->
 
 <script>
+import { GLTFLoader } from 'bulid/GLTFLoader.js';
+import { DRACOLoader } from 'bulid/DRACOLoader.js';	
 
 var scene, camera, renderer, clock, deltaTime, totalTime;
 
