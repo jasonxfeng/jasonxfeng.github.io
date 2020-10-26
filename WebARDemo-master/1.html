@@ -6,7 +6,8 @@
 	<script src='bulid/three.js'></script>
 	<script src='bulid/OBJLoader.js'></script>
 	<script src='bulid/MTLLoader.js'></script>
-	
+	<script src='bulid/GLTFLoader.js'></script>
+	<script src='bulid/DRACOLoader.js'></script>
 	<!-- include jsartookit -->
 	<script src="bulid/artoolkit.min.js"></script>
 	<script src="bulid/artoolkit.api.js"></script>
@@ -24,9 +25,7 @@
   Based on the AR.js library and examples created by Jerome Etienne: https://github.com/jeromeetienne/AR.js/
 -->
 
-<script>
-import { GLTFLoader } from 'bulid/GLTFLoader.js';
-import { DRACOLoader } from 'bulid/DRACOLoader.js';	
+<script>	
 
 var scene, camera, renderer, clock, deltaTime, totalTime;
 
@@ -129,9 +128,9 @@ function initialize()
 	function onProgress(xhr) { console.log( (xhr.loaded / xhr.total * 100) + '% loaded' ); }
 	function onError(xhr) { console.log( 'An error happened' ); }
 	
-		var dracoLoader = new DRACOLoader();
+		var dracoLoader = new THREE.DRACOLoader();
 		dracoLoader.setDecoderPath( 'bulid/gltf/' );
-                 var loader = new GLTFLoader().setPath( 'obj/' );
+                 var loader = new THREE.GLTFLoader().setPath( 'obj/' );
 	        loader.setDRACOLoader( dracoLoader );
 		loader.load( 'blasterA.glb', function ( gltf ) {
 
