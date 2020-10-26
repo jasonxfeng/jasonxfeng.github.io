@@ -182,7 +182,8 @@
 			var loader = new THREE.GLTFLoader();
 			loader.setDRACOLoader( dracoLoader );
 			loader.load( 'obj/LittlestTokyo.glb', function ( gltf ) {
-
+                var axes=new THREE.AxisHelper(10);
+                scene.add(axes);
 				var model = gltf.scene;
 				model.position.set( 1, 1, 0 );
 				model.scale.set( 1, 1, 1 );
