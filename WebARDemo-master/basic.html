@@ -176,29 +176,25 @@
 
         var onError = function ( xhr ) { };
 
-        var mtlLoader = new THREE.MTLLoader();
+			var dracoLoader = new THREE.DRACOLoader();
+			dracoLoader.setDecoderPath( 'bulid/gltf/' );
 
-        mtlLoader.setPath( 'obj/' );
+			var loader = new THREE.GLTFLoader();
+			loader.setDRACOLoader( dracoLoader );
+			loader.load( 'obj/LittlestTokyo.glb', function ( gltf ) {
 
-        mtlLoader.load( 'jj.mtl', function( materials ) {
+				var model = gltf.scene;
+				model.position.set( 1, 1, 0 );
+				model.scale.set( 1, 1, 1 );
 
-            materials.preload();
+				scene.add( model );
 
-            var objLoader = new THREE.OBJLoader();
+				mixer = new THREE.AnimationMixer( model );
+				mixer.clipAction( gltf.animations[ 0 ] ).play();
 
-            objLoader.setMaterials( materials );
+				animate();
 
-            objLoader.setPath( 'obj/' );
-
-            objLoader.load( 'jj.obj', function ( object ) {
-
-                obj=object;
-                scene.add( object );
-                object.position.set(0,0,0);
-                object.scale.set(0.001,0.001,0.001);
-                var axes=new THREE.AxisHelper(10);
-                scene.add(axes);
-            }, onProgress, onError );
+			}, onProgress, onError );
 
         });
 
