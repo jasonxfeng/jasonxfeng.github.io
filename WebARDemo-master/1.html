@@ -14,7 +14,7 @@
 			<a href="https://sketchfab.com/theblueturtle_" target="_blank" rel="noopener">theblueturtle_</a><br />
 			<a href="https://hdrihaven.com/hdri/?h=royal_esplanade" target="_blank" rel="noopener">Royal Esplanade</a> by <a href="https://hdrihaven.com/" target="_blank" rel="noopener">HDRI Haven</a>
 		</div>
-                   
+                 <script src="bulid/ar.js"></script>
 		<script type="module">
 
 			import * as THREE from './bulid/three.module.js';
@@ -34,7 +34,7 @@
 				const container = document.createElement( 'div' );
 				document.body.appendChild( container );
 
-				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.25, 20 );
+				camera=new THREE.Camera();
 				camera.position.set( - 1.8, 0.6, 2.7 );
 
 				scene = new THREE.Scene();
