@@ -9,7 +9,7 @@
 
 	<body>
 		<div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> -222 GLTFLoader<br />
+			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> -333 GLTFLoader<br />
 			Battle Damaged Sci-fi Helmet by
 			<a href="https://sketchfab.com/theblueturtle_" target="_blank" rel="noopener">theblueturtle_</a><br />
 			<a href="https://hdrihaven.com/hdri/?h=royal_esplanade" target="_blank" rel="noopener">Royal Esplanade</a> by <a href="https://hdrihaven.com/" target="_blank" rel="noopener">HDRI Haven</a>
@@ -39,7 +39,7 @@
 
 				scene = new THREE.Scene();
 
-				new RGBELoader()
+				new THREE.RGBELoader()
 					.setDataType( THREE.UnsignedByteType )
 					.setPath( 'obj/' )
 					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
@@ -57,9 +57,9 @@
 						// model
 
 						// use of RoughnessMipmapper is optional
-						const roughnessMipmapper = new RoughnessMipmapper( renderer );
+						const roughnessMipmapper = new THREE.RoughnessMipmapper( renderer );
 
-						const loader = new GLTFLoader().setPath( 'obj/' );
+						const loader = new THREE.GLTFLoader().setPath( 'obj/' );
 						loader.load( 'DamagedHelmet.gltf', function ( gltf ) {
 
 							gltf.scene.traverse( function ( child ) {
@@ -94,7 +94,7 @@
 				const pmremGenerator = new THREE.PMREMGenerator( renderer );
 				pmremGenerator.compileEquirectangularShader();
 
-				const controls = new OrbitControls( camera, renderer.domElement );
+				const controls = new THREE.OrbitControls( camera, renderer.domElement );
 				controls.addEventListener( 'change', render ); // use if there is no animation loop
 				controls.minDistance = 2;
 				controls.maxDistance = 10;
