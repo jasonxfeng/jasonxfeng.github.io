@@ -12,19 +12,18 @@
 <style>
 </style>
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;-webkit-transform:translate3d(0,0,0);'  ><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
-	 
+	 
 	<div id="Stats-output">
 	</div>
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js camera transform
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
-	<p id="p1">"444"</p>
 <script>
 			import { GLTFLoader } from './bulid/GLTFLoader.js';
-			import { RGBELoader } from './bulid/RGBELoader.js';
-			import { OrbitControls } from './bulid/OrbitControls.js';
-			import { RoughnessMipmapper } from './bulid/RoughnessMipmapper.js';
+			import { DRACOLoader } from './bulid/DRACOLoader.js';
+	                import { OrbitControls } from './bulid/OrbitControls.js';
+	
         var obj;
 	//fps监测
 	    var stats = initStats();
@@ -146,7 +145,6 @@
     });
 
     // run the rendering loop
-	/*
     var lastTimeMsec= null
     requestAnimationFrame(function animate(nowMsec){
         // keep looping
@@ -162,10 +160,9 @@
             onRenderFct(deltaMsec/1000, nowMsec/1000)
         })
     })
-*/
+
 
         var onProgress = function ( xhr ) {
-		document.getElementById("p1").innerHTML = "progreess";
 
             if ( xhr.lengthComputable ) {
 
@@ -179,22 +176,23 @@
 
 
 
-        var onError = function ( xhr ) {
-	document.getElementById("p1").innerHTML = "ONERROR";
-	};
+        var onError = function ( xhr ) { };
 
-			var dracoLoader = new THREE.DRACOLoader();
+        const dracoLoader = new DRACOLoader();
 			dracoLoader.setDecoderPath( 'bulid/gltf/' );
 
-			var loader = new THREE.GLTFLoader();
+			const loader = new GLTFLoader();
 			loader.setDRACOLoader( dracoLoader );
 			loader.load( 'obj/LittlestTokyo.glb', function ( gltf ) {
-				document.getElementById("p1").innerHTML = "gltf loader";
-                var axes=new THREE.AxisHelper(10);
-                scene.add(axes);
-				var model = gltf.scene;
+
+				const model = gltf.scene;
 				model.position.set( 1, 1, 0 );
-				model.scale.set( 1, 1, 1 );
+				model.scale.set( 0.01, 0.01, 0.01 );
+				model.traverse( function ( child ) {
+
+					if ( child.isMesh ) child.material.envMap = envMap;
+
+				} );
 
 				scene.add( model );
 
@@ -203,9 +201,7 @@
 
 				animate();
 
-			}, onProgress, onError );
-
-       
+			}, onProgress, onError);
 
 
 </script></body>
