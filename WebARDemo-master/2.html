@@ -1,164 +1,212 @@
 <!DOCTYPE html>
-<head>
-	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-	<title>Hello, world!</title>
-	<!-- include three.js library -->
-	<script src='bulid/three.js'></script>
-	<script src='bulid/OBJLoader.js'></script>
-	<script src='bulid/MTLLoader.js'></script>
-	<!-- include bulid -->
-	<script src="bulid/artoolkit.min.js"></script>
-	<script src="bulid/artoolkit.api.js"></script>
-	<!-- include threex.artoolkit -->
-	<script src="bulid/threex-artoolkitsource.js"></script>
-	<script src="bulid/threex-artoolkitcontext.js"></script>
-	<script src="bulid/threex-arbasecontrols.js"></script>
-	<script src="bulid/threex-armarkercontrols.js"></script>
-</head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<!-- three.js library -->
+<script src='bulid/three.js'></script>
+<script src="bulid/stats.js"></script>
+<script src="bulid/three.module.js"></script>
+<!-- ar.js -->
+<script src="bulid/ar.js"></script>
+<script src="bulid/MTLLoader.js"></script>
+<script src="bulid/OBJLoader.js"></script>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
-
-<!-- 
-  Example created by Lee Stemkoski: https://github.com/stemkoski
-  Based on the AR.js library and examples created by Jerome Etienne: https://github.com/jeromeetienne/AR.js/
--->
-
+<style>
+</style>
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;-webkit-transform:translate3d(0,0,0);'  ><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
+	 
+	<div id="Stats-output">
+	</div>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js camera transform
+	<br/>
+	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+</div>
+	<p id="p1">"333"</p>
 <script>
+			import { GLTFLoader } from './bulid/GLTFLoader.js';
+			import { RGBELoader } from './bulid/RGBELoader.js';
+			import { OrbitControls } from './bulid/OrbitControls.js';
+			import { RoughnessMipmapper } from './bulid/RoughnessMipmapper.js';
+        var obj;
+	//fps监测
+	    var stats = initStats();
 
-var scene, camera, renderer, clock, deltaTime, totalTime;
+	    //fps状态
+	    function initStats() {
+	        var stats = new Stats();
+	        stats.setMode(0); // 0: fps, 1: ms
 
-var arToolkitSource, arToolkitContext;
+	        // Align top-left
+	        stats.domElement.style.position = 'absolute';
+	        stats.domElement.style.left = '0px';
+	        stats.domElement.style.top = '0px';
 
-var markerRoot1;
+	        document.getElementById("Stats-output").appendChild(stats.domElement);
+	        return stats;
+	    }
 
-var mesh1;
+    // init renderer
+    var renderer	= new THREE.WebGLRenderer({
+        antialias: true,                                	//开启抗锯齿
+        alpha: true                                      	//开启背景透明
+    });
+    renderer.setClearColor(new THREE.Color('lightgrey'), 0);
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.domElement.style.position = 'absolute';
+    renderer.domElement.style.top = '0px';
+    renderer.domElement.style.left = '0px';
+    document.body.appendChild(renderer.domElement);
 
-initialize();
-animate();
+    // array of functions for the rendering loop 呈现循环的函数数组
+    var onRenderFcts= [];
 
-function initialize()
-{
-	scene = new THREE.Scene();
+    // 初始化场景和摄像机
+    var scene	= new THREE.Scene();
+    var light = new THREE.DirectionalLight(0xffffff,1.0);
 
-	let ambientLight = new THREE.AmbientLight( 0xcccccc, 1.0 );
-	scene.add( ambientLight );
-				
-	camera = new THREE.Camera();
-	scene.add(camera);
+    //位置不同，方向光作用于物体的面也不同，看到的物体各个面的颜色也不同
+    //light.position.set(0,1,0.5 ).normalize();
+	light.position.set(0,30,40);
+    light.castShadow = true; // 启用阴影选项
+    scene.add(light);
 
-	renderer = new THREE.WebGLRenderer({
-		antialias : true,
-		alpha: true
-	});
-	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-	renderer.setSize( 640, 480 );
-	renderer.domElement.style.position = 'absolute'
-	renderer.domElement.style.top = '0px'
-	renderer.domElement.style.left = '0px'
-	document.body.appendChild( renderer.domElement );
+    //环境光设置
+    var ambilight = new THREE.AmbientLight(0xffffff,0.2);
+    scene.add(ambilight);
 
-	clock = new THREE.Clock();
-	deltaTime = 0;
-	totalTime = 0;
-	
-	////////////////////////////////////////////////////////////
-	// setup arToolkitSource
-	////////////////////////////////////////////////////////////
+    // 初始化摄像机位置(0，0，0)
+     camera=new THREE.Camera();
+    scene.add(camera);
 
-	arToolkitSource = new THREEx.ArToolkitSource({
-	});
+    // handle arToolkitSource
+    var arToolkitSource = new THREEx.ArToolkitSource({})
+    arToolkitSource.init(function onReady(){
+        onResize()
+    })
 
-	function onResize()
-	{
-		arToolkitSource.onResize()	
-		arToolkitSource.copySizeTo(renderer.domElement)	
-		if ( arToolkitContext.arController !== null )
-		{
-			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
-		}	
-	}
+    // handle resize
+    window.addEventListener('resize', function(){
+        onResize()
+    })
+    function onResize(){
+        arToolkitSource.onResize()
+        arToolkitSource.copySizeTo(renderer.domElement)
+        if( arToolkitContext.arController !== null ){
+            arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
+        }
+    }
 
-	arToolkitSource.init(function onReady(){
-		onResize()
-	});
-	
-	// handle resize event
-	window.addEventListener('resize', function(){
-		onResize()
-	});
-	
-	////////////////////////////////////////////////////////////
-	// setup arToolkitContext
-	////////////////////////////////////////////////////////////	
 
-	// create atToolkitContext
-	arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: 'data/camera_para.dat',
-		detectionMode: 'mono'
-	});
-	
-	// copy projection matrix to camera when initialization complete
-	arToolkitContext.init( function onCompleted(){
-		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
-	});
+    //initialize arToolkitContext
 
-	////////////////////////////////////////////////////////////
-	// setup markerRoots
-	////////////////////////////////////////////////////////////
+    // create atToolkitContext
+    var arToolkitContext = new THREEx.ArToolkitContext({
+        cameraParametersUrl:  'data/camera_para.dat',
+        detectionMode: 'mono',
+    })
 
-	// build markerControls
+    // initialize it
+    arToolkitContext.init(function onCompleted(){
+        // copy projection matrix to camera
+        camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+    })
 
-	let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, camera, {
-		type: 'pattern', patternUrl: "arcode/marker89.td",changeMatrixMode: 'cameraTransformMatrix'
-	})
+    // update artoolkit on every frame
+    onRenderFcts.push(function(){
+        if( arToolkitSource.ready === false )	return
 
-	
-	function onProgress(xhr) { console.log( (xhr.loaded / xhr.total * 100) + '% loaded' ); }
-	function onError(xhr) { console.log( 'An error happened' ); }
-	
-	new THREE.MTLLoader()
-		.setPath( 'obj/' )
-		.load( 'jj.mtl', function ( materials ) {
-			materials.preload();
-			new THREE.OBJLoader()
-				.setMaterials( materials )
-				.setPath( 'obj/' )
-				.load( 'jj.obj', function ( object ) {
-                obj=object;
-                scene.add( object );
-                object.position.set(0,0,0);
-                object.scale.set(0.001,0.001,0.001);
+        arToolkitContext.update( arToolkitSource.domElement )
+
+        // update scene.visible if the marker is seen
+        scene.visible = camera.visible
+
+    })
+    // init controls for camera
+    var markerControls = new THREEx.ArMarkerControls(arToolkitContext,camera, {
+        type : 'pattern',
+        patternUrl : 'arcode/marker89.td',
+        // patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+        // as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+        changeMatrixMode: 'cameraTransformMatrix'
+    })
+        scene.visible = false;
+//    scene.visible = false;
+
+    onRenderFcts.push(function(delta){
+//            if(obj)
+//			{
+//			    obj.rotation.y=+1;
+//			}
+    });
+
+
+    //render the whole thing on the page
+
+    // render the scene
+    onRenderFcts.push(function(){
+        renderer.render( scene, camera );
+    });
+
+    // run the rendering loop
+	/*
+    var lastTimeMsec= null
+    requestAnimationFrame(function animate(nowMsec){
+        // keep looping
+        requestAnimationFrame( animate );
+//        stats.update();
+        // measure time
+        lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+        var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+        lastTimeMsec	= nowMsec
+        // call each update function
+        onRenderFcts.forEach(
+            function(onRenderFct){
+            onRenderFct(deltaMsec/1000, nowMsec/1000)
+        })
+    })
+*/
+
+        var onProgress = function ( xhr ) {
+		document.getElementById("p1").innerHTML = "progreess";
+
+            if ( xhr.lengthComputable ) {
+
+                var percentComplete = xhr.loaded / xhr.total * 100;
+
+                console.log( Math.round(percentComplete, 2) + '% downloaded' );
+
+            }
+
+        };
+
+
+
+        var onError = function ( xhr ) {
+	document.getElementById("p1").innerHTML = "ONERROR";
+	};
+
+			var dracoLoader = new THREE.DRACOLoader();
+			dracoLoader.setDecoderPath( 'bulid/gltf/' );
+
+			var loader = new THREE.GLTFLoader();
+			loader.setDRACOLoader( dracoLoader );
+			loader.load( 'obj/LittlestTokyo.glb', function ( gltf ) {
+				document.getElementById("p1").innerHTML = "gltf loader";
                 var axes=new THREE.AxisHelper(10);
                 scene.add(axes);
-				}, onProgress, onError );
-		});
-}
+				var model = gltf.scene;
+				model.position.set( 1, 1, 0 );
+				model.scale.set( 1, 1, 1 );
+
+				scene.add( model );
+
+				mixer = new THREE.AnimationMixer( model );
+				mixer.clipAction( gltf.animations[ 0 ] ).play();
+
+				animate();
+
+			}, onProgress, onError );
+
+       
 
 
-function update()
-{
-	// update artoolkit on every frame
-	if ( arToolkitSource.ready !== false )
-		arToolkitContext.update( arToolkitSource.domElement );
-}
-
-
-function render()
-{
-	renderer.render( scene, camera );
-}
-
-
-function animate()
-{
-	requestAnimationFrame(animate);
-	deltaTime = clock.getDelta();
-	totalTime += deltaTime;
-	update();
-	render();
-}
-
-</script>
-
-</body>
-</html>
+</script></body>
