@@ -10,7 +10,7 @@
 		<div id="container"></div>
 
 		<div id="info">
-			3333 This demo shows how clone a skinned 3d model using <strong>SkeletonUtils.clone()</strong><br/>
+			1111 This demo shows how clone a skinned 3d model using <strong>SkeletonUtils.clone()</strong><br/>
 			Soldier model from <a href="https://www.mixamo.com" target="_blank" rel="noopener">https://www.mixamo.com</a>.
 		</div>
 
@@ -335,13 +335,13 @@
 				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
 				camera.position.set( 3, 6, - 10 );
 				camera.lookAt( 0, 1, 0 );
-                                worldScene.add( camera );
+                                
 				clock = new THREE.Clock();
 
 				worldScene = new THREE.Scene();
 				worldScene.background = new THREE.Color( 0xa0a0a0 );
 				worldScene.fog = new THREE.Fog( 0xa0a0a0, 10, 22 );
-
+                                worldScene.add( camera );
 				var hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
 				hemiLight.position.set( 0, 20, 0 );
 				worldScene.add( hemiLight );
