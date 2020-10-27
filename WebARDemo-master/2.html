@@ -19,6 +19,7 @@
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
+	<div id="test">????????</div>
 	<script type="module">
 	                import * as THREE from './bulid/three.module.js';
 			import { GLTFLoader } from './bulid/GLTFLoader.js';
@@ -185,7 +186,7 @@
 			const loader = new GLTFLoader();
 			loader.setDRACOLoader( dracoLoader );
 			loader.load( 'obj/LittlestTokyo.glb', function ( gltf ) {
-
+               document.getElementById('test').innerHTML = 'loader';
 				const model = gltf.scene;
 				model.position.set( 1, 1, 0 );
 				model.scale.set( 0.01, 0.01, 0.01 );
