@@ -9,8 +9,6 @@
 <script src="bulid/ar.js"></script>
 <script src="bulid/MTLLoader.js"></script>
 <script src="bulid/OBJLoader.js"></script>
-<script src="bulid/GLTFLoader.js"></script>
-<script src="bulid/DRACOLoader.js"></script>
 
 <style>
 </style>
@@ -24,7 +22,8 @@
 </div>
 	<p id="p1">"333"</p>
 <script>
-	
+			import { GLTFLoader } from './bulid/GLTFLoader.js';
+			import { RGBELoader } from './bulid/RGBELoader.js';
         var obj;
 	//fps监测
 	    var stats = initStats();
