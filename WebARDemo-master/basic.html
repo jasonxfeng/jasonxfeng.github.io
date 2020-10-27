@@ -14,17 +14,15 @@
 			<a href="https://sketchfab.com/theblueturtle_" target="_blank" rel="noopener">theblueturtle_</a><br />
 			<a href="https://hdrihaven.com/hdri/?h=royal_esplanade" target="_blank" rel="noopener">Royal Esplanade</a> by <a href="https://hdrihaven.com/" target="_blank" rel="noopener">HDRI Haven</a>
 		</div>
-        <p id="p1">"44"</p>
-		
-		<script src="bulid/ar.js"></script>
+
 		<script type="module">
 
-			import * as THREE from './bulid/three.module.js';
+			import * as THREE from '../build/three.module.js';
 
-			import { OrbitControls } from './bulid/OrbitControls.js';
-			import { GLTFLoader } from './bulid/GLTFLoader.js';
-			import { RGBELoader } from './bulid/RGBELoader.js';
-			import { RoughnessMipmapper } from './bulid/RoughnessMipmapper.js';
+			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
+			import { RGBELoader } from './jsm/loaders/RGBELoader.js';
+			import { RoughnessMipmapper } from './jsm/utils/RoughnessMipmapper.js';
 
 			let camera, scene, renderer;
 
@@ -40,7 +38,7 @@
 				camera.position.set( - 1.8, 0.6, 2.7 );
 
 				scene = new THREE.Scene();
-                                //scene.add(camera);
+
 				new RGBELoader()
 					.setDataType( THREE.UnsignedByteType )
 					.setPath( 'textures/equirectangular/' )
@@ -61,9 +59,9 @@
 						// use of RoughnessMipmapper is optional
 						const roughnessMipmapper = new RoughnessMipmapper( renderer );
 
-						const loader = new GLTFLoader().setPath( 'obj/' );
+						const loader = new GLTFLoader().setPath( 'models/gltf/DamagedHelmet/glTF/' );
 						loader.load( 'DamagedHelmet.gltf', function ( gltf ) {
-                        document.getElementById("p1").innerHTML = "gltf loader";
+
 							gltf.scene.traverse( function ( child ) {
 
 								if ( child.isMesh ) {
