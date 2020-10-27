@@ -16,10 +16,10 @@
 
 		<script type="module">
 
-			import * as THREE from '../build/three.module.js';
+			import * as THREE from './bulid/three.module.js';
 
-			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
-			import { SkeletonUtils } from './jsm/utils/SkeletonUtils.js';
+			import { GLTFLoader } from '.bulid/GLTFLoader.js';
+			import { SkeletonUtils } from '.bulid/SkeletonUtils.js';
 
 			//////////////////////////////
 			// Global objects
@@ -335,7 +335,7 @@
 				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
 				camera.position.set( 3, 6, - 10 );
 				camera.lookAt( 0, 1, 0 );
-
+                                worldScene.add( camera );
 				clock = new THREE.Clock();
 
 				worldScene = new THREE.Scene();
