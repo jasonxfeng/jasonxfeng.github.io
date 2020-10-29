@@ -294,16 +294,16 @@
 
 				// Get the time elapsed since the last frame
 
-				//var mixerUpdateDelta = clock.getDelta();
+				var mixerUpdateDelta = clock.getDelta();
 
 				// Update all the animation frames
-                                /*
+                                
 				for ( var i = 0; i < mixers.length; ++ i ) {
 
 					mixers[ i ].update( mixerUpdateDelta );
 
 				}
-				*/
+				
                                 controls.update();
 				renderer.render( worldScene, camera );
 
@@ -349,7 +349,7 @@
 				var hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
 				hemiLight.position.set( 0, 20, 0 );
 				worldScene.add( hemiLight );
-
+/*
 				var dirLight = new THREE.DirectionalLight( 0xffffff );
 				dirLight.position.set( - 3, 10, - 10 );
 				dirLight.castShadow = true;
@@ -360,7 +360,7 @@
 				dirLight.shadow.camera.near = 0.1;
 				dirLight.shadow.camera.far = 40;
 				worldScene.add( dirLight );
-
+*/
 				// ground
 				var groundMesh = new THREE.Mesh(
 					new THREE.PlaneBufferGeometry( 40, 40 ),
