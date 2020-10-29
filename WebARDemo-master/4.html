@@ -10,12 +10,22 @@
 		<div id="container"></div>
 
 		<div id="info">
-			11 This demo shows how clone a skinned 3d model using <strong>SkeletonUtils.clone()</strong><br/>
+			2222 This demo shows how clone a skinned 3d model using <strong>SkeletonUtils.clone()</strong><br/>
 			Soldier model from <a href="https://www.mixamo.com" target="_blank" rel="noopener">https://www.mixamo.com</a>.
 		</div>
 
 		<script type="module">
+			
+			const startButton = document.getElementById( 'startButton' );
+			startButton.addEventListener( 'click', function () {
 
+			initScene();
+			initRenderer();
+			loadModels();
+			animate();
+
+			}, false );
+			
 			import * as THREE from './bulid/three.module.js';
 
 			import { GLTFLoader } from './bulid/GLTFLoader.js';
@@ -94,10 +104,7 @@
 			// The main setup happens here
 			//////////////////////////////
 			var numLoadedModels = 0;
-			initScene();
-			initRenderer();
-			loadModels();
-			animate();
+
 			//////////////////////////////
 
 
