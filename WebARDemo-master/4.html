@@ -7,8 +7,8 @@
 		<link type="text/css" rel="stylesheet" href="main.css">
 	</head>
 	<body>
-		<div id="container"></div>
 
+		
 		<div id="info">
 			111 This demo shows how clone a skinned 3d model using <strong>SkeletonUtils.clone()</strong><br/>
 			Soldier model from <a href="https://www.mixamo.com" target="_blank" rel="noopener">https://www.mixamo.com</a>.
@@ -320,14 +320,14 @@
 			 */
 			function initRenderer() {
 
-				var container = document.getElementById( 'container' );
+				//var container = document.getElementById( 'container' );
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.outputEncoding = THREE.sRGBEncoding;
 				renderer.shadowMap.enabled = true;
 				renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-				container.appendChild( renderer.domElement );
+				//container.appendChild( renderer.domElement );
 
 			}
 
