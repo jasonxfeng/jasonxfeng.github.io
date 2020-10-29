@@ -10,7 +10,7 @@
 		<div id="container"></div>
 
 		<div id="info">
-			222 This demo shows how clone a skinned 3d model using <strong>SkeletonUtils.clone()</strong><br/>
+			333 This demo shows how clone a skinned 3d model using <strong>SkeletonUtils.clone()</strong><br/>
 			Soldier model from <a href="https://www.mixamo.com" target="_blank" rel="noopener">https://www.mixamo.com</a>.
 		</div>
 
@@ -20,6 +20,7 @@
 
 			import { GLTFLoader } from './bulid/GLTFLoader.js';
 			import { SkeletonUtils } from './bulid/SkeletonUtils.js';
+			import { DeviceOrientationControls } from './bulid/DeviceOrientationControls.js';
 
 			//////////////////////////////
 			// Global objects
@@ -301,7 +302,7 @@
 					mixers[ i ].update( mixerUpdateDelta );
 
 				}
-
+                                controls.update();
 				renderer.render( worldScene, camera );
 
 			}
@@ -332,10 +333,11 @@
 			 */
 			function initScene() {
 
-				//camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
 				//camera.position.set( 3, 6, - 10 );
 				//camera.lookAt( 0, 1, 0 );
-                                camera = new THREE.Camera();
+                                //camera = new THREE.Camera();
+				controls = new DeviceOrientationControls( camera );
 				clock = new THREE.Clock();
 
 				worldScene = new THREE.Scene();
