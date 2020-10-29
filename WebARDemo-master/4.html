@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<div id="container"></div>
-           <button id="startButton">Start Demo</button>
+
 		<div id="info">
 			2222 This demo shows how clone a skinned 3d model using <strong>SkeletonUtils.clone()</strong><br/>
 			Soldier model from <a href="https://www.mixamo.com" target="_blank" rel="noopener">https://www.mixamo.com</a>.
@@ -16,15 +16,6 @@
 
 		<script type="module">
 			
-			const startButton = document.getElementById( 'startButton' );
-			startButton.addEventListener( 'click', function () {
-
-			initScene();
-			initRenderer();
-			loadModels();
-			animate();
-
-			}, false );
 			
 			import * as THREE from './bulid/three.module.js';
 
@@ -104,7 +95,10 @@
 			// The main setup happens here
 			//////////////////////////////
 			var numLoadedModels = 0;
-
+			initScene();
+			initRenderer();
+			loadModels();
+			animate();
 			//////////////////////////////
 
 
