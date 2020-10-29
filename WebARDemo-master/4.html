@@ -294,15 +294,16 @@
 
 				// Get the time elapsed since the last frame
 
-				var mixerUpdateDelta = clock.getDelta();
+				//var mixerUpdateDelta = clock.getDelta();
 
 				// Update all the animation frames
-
+                                /*
 				for ( var i = 0; i < mixers.length; ++ i ) {
 
 					mixers[ i ].update( mixerUpdateDelta );
 
 				}
+				*/
                                 controls.update();
 				renderer.render( worldScene, camera );
 
