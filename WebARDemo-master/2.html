@@ -62,10 +62,11 @@
     // 初始化场景和摄像机
     var scene	= new THREE.Scene();
     var light = new THREE.DirectionalLight(0xffffff,1.0);
+		
 
     //位置不同，方向光作用于物体的面也不同，看到的物体各个面的颜色也不同
     //light.position.set(0,1,0.5 ).normalize();
-	light.position.set(0,30,40);
+	light.position.set(0,0,0);
     light.castShadow = true; // 启用阴影选项
     scene.add(light);
 
@@ -193,8 +194,8 @@
 				                var axes=new THREE.AxisHelper(10);
                 scene.add(axes);
 				const model = gltf.scene;
-				model.position.set( 0, 0, 0 );
-				model.scale.set( 0.001, 0.001, 0.001 );
+				model.position.set( 1, 1, 1 );
+				model.scale.set( 0.01, 0.01, 0.01 );
 
 				scene.add( model );
 
