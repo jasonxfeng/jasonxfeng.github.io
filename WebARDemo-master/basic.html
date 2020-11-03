@@ -1,130 +1,211 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<title>three.js webgl - glTF loader</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<link type="text/css" rel="stylesheet" href="main.css">
-	</head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<!-- three.js library -->
+<script src='bulid/three.js'></script>
+<script src="bulid/stats.js"></script>
+<!-- ar.js -->
+<script src="bulid/ar.js"></script>
+<script src="bulid/MTLLoader.js"></script>
+<script src="bulid/OBJLoader.js"></script>
 
-	<body>
-		<div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> -3333 GLTFLoader<br />
-			Battle Damaged Sci-fi Helmet by
-			<a href="https://sketchfab.com/theblueturtle_" target="_blank" rel="noopener">theblueturtle_</a><br />
-			<a href="https://hdrihaven.com/hdri/?h=royal_esplanade" target="_blank" rel="noopener">Royal Esplanade</a> by <a href="https://hdrihaven.com/" target="_blank" rel="noopener">HDRI Haven</a>
-		</div>
-                   
-		<script type="module">
-
-			import * as THREE from './bulid/three.module.js';
-
-			import { OrbitControls } from './bulid/OrbitControls.js';
+<style>
+</style>
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;-webkit-transform:translate3d(0,0,0);'  ><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
+	 
+	<div id="Stats-output">
+	</div>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - 222 three.js camera transform
+	<br/>
+	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+</div>
+	<div id="test">????????</div>
+	<script type="module">
+	                import * as THREE from './bulid/three.module.js';
 			import { GLTFLoader } from './bulid/GLTFLoader.js';
-			import { RGBELoader } from './bulid/RGBELoader.js';
-			import { RoughnessMipmapper } from './bulid/RoughnessMipmapper.js';
+			import { DRACOLoader } from './bulid/DRACOLoader.js';
+	                import { OrbitControls } from './bulid/OrbitControls.js';
+	
+        var obj;
+	//fps监测
+	    var stats = initStats();
 
-			let camera, scene, renderer;
+	    //fps状态
+	    function initStats() {
+	        var stats = new Stats();
+	        stats.setMode(0); // 0: fps, 1: ms
 
-			init();
-			render();
+	        // Align top-left
+	        stats.domElement.style.position = 'absolute';
+	        stats.domElement.style.left = '0px';
+	        stats.domElement.style.top = '0px';
 
-			function init() {
+	        document.getElementById("Stats-output").appendChild(stats.domElement);
+	        return stats;
+	    }
 
-				const container = document.createElement( 'div' );
-				document.body.appendChild( container );
+    // init renderer
+    var renderer	= new THREE.WebGLRenderer({
+        antialias: true,                                	//开启抗锯齿
+        alpha: true                                      	//开启背景透明
+    });
+    renderer.setClearColor(new THREE.Color('lightgrey'), 0);
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.domElement.style.position = 'absolute';
+    renderer.domElement.style.top = '0px';
+    renderer.domElement.style.left = '0px';
+    document.body.appendChild(renderer.domElement);
 
-				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.25, 20 );
-				camera.position.set( - 1.8, 0.6, 2.7 );
+    // array of functions for the rendering loop 呈现循环的函数数组
+    var onRenderFcts= [];
 
-				scene = new THREE.Scene();
-                                scene.add(camera);
-				new RGBELoader()
-					.setDataType( THREE.UnsignedByteType )
-					.setPath( 'obj/' )
-					.load( 'royal_esplanade_1k.hdr', function ( texture ) {
+    // 初始化场景和摄像机
+    var scene	= new THREE.Scene();
+    var light = new THREE.DirectionalLight(0xffffff,1.0);
+		
 
-						const envMap = pmremGenerator.fromEquirectangular( texture ).texture;
+    //位置不同，方向光作用于物体的面也不同，看到的物体各个面的颜色也不同
+    //light.position.set(0,1,0.5 ).normalize();
+	light.position.set(0,0,0);
+    light.castShadow = true; // 启用阴影选项
+    scene.add(light);
 
-						scene.background = envMap;
-						scene.environment = envMap;
+    //环境光设置
+    var ambilight = new THREE.AmbientLight(0xffffff,0.2);
+    scene.add(ambilight);
 
-						texture.dispose();
-						pmremGenerator.dispose();
+    // 初始化摄像机位置(0，0，0)
+    var camera=new THREE.Camera();
+    scene.add(camera);
 
-						render();
+    // handle arToolkitSource
+    var arToolkitSource = new THREEx.ArToolkitSource({})
+    arToolkitSource.init(function onReady(){
+        onResize()
+    })
 
-						// model
+    // handle resize
+    window.addEventListener('resize', function(){
+        onResize()
+    })
+    function onResize(){
+        arToolkitSource.onResize()
+        arToolkitSource.copySizeTo(renderer.domElement)
+        if( arToolkitContext.arController !== null ){
+            arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
+        }
+    }
 
-						// use of RoughnessMipmapper is optional
-						const roughnessMipmapper = new RoughnessMipmapper( renderer );
 
-						const loader = new GLTFLoader().setPath( 'obj/' );
-						loader.load( 'DamagedHelmet.gltf', function ( gltf ) {
+    //initialize arToolkitContext
 
-							gltf.scene.traverse( function ( child ) {
+    // create atToolkitContext
+    var arToolkitContext = new THREEx.ArToolkitContext({
+        cameraParametersUrl:  'data/camera_para.dat',
+        detectionMode: 'mono',
+    })
 
-								if ( child.isMesh ) {
+    // initialize it
+    arToolkitContext.init(function onCompleted(){
+        // copy projection matrix to camera
+        camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+    })
 
-									// TOFIX RoughnessMipmapper seems to be broken with WebGL 2.0
-									// roughnessMipmapper.generateMipmaps( child.material );
+    // update artoolkit on every frame
+    onRenderFcts.push(function(){
+        if( arToolkitSource.ready === false )	return
 
-								}
+        arToolkitContext.update( arToolkitSource.domElement )
 
-							} );
+        // update scene.visible if the marker is seen
+        scene.visible = camera.visible
 
-							scene.add( gltf.scene );
+    })
+    // init controls for camera
+		
+    var markerControls = new THREEx.ArMarkerControls(arToolkitContext,camera, {
+        type : 'pattern',
+        patternUrl : 'arcode/marker89.td',
+        // patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+        // as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+        changeMatrixMode: 'cameraTransformMatrix'
+    })
+    
+	//var markerControls = new THREEx.ArBaseControls(	camera )
+        scene.visible = false;
+//    scene.visible = false;
 
-							roughnessMipmapper.dispose();
+    onRenderFcts.push(function(delta){
+//            if(obj)
+//			{
+//			    obj.rotation.y=+1;
+//			}
+    });
 
-							render();
 
-						} );
+    //render the whole thing on the page
 
-					} );
+    // render the scene
+    onRenderFcts.push(function(){
+        renderer.render( scene, camera );
+    });
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.toneMapping = THREE.ACESFilmicToneMapping;
-				renderer.toneMappingExposure = 1;
-				renderer.outputEncoding = THREE.sRGBEncoding;
-				container.appendChild( renderer.domElement );
+    // run the rendering loop
+    var lastTimeMsec= null
+    requestAnimationFrame(function animate(nowMsec){
+        // keep looping
+        requestAnimationFrame( animate );
+//        stats.update();
+        // measure time
+        lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+        var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+        lastTimeMsec	= nowMsec
+        // call each update function
+        onRenderFcts.forEach(
+            function(onRenderFct){
+            onRenderFct(deltaMsec/1000, nowMsec/1000)
+        })
+    })
 
-				const pmremGenerator = new THREE.PMREMGenerator( renderer );
-				pmremGenerator.compileEquirectangularShader();
 
-				const controls = new OrbitControls( camera, renderer.domElement );
-				controls.addEventListener( 'change', render ); // use if there is no animation loop
-				controls.minDistance = 2;
-				controls.maxDistance = 10;
-				controls.target.set( 0, 0, - 0.2 );
-				controls.update();
+        var onProgress = function ( xhr ) {
 
-				window.addEventListener( 'resize', onWindowResize, false );
+            if ( xhr.lengthComputable ) {
 
-			}
+                var percentComplete = xhr.loaded / xhr.total * 100;
 
-			function onWindowResize() {
+                console.log( Math.round(percentComplete, 2) + '% downloaded' );
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
+            }
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+        };
 
-				render();
 
-			}
 
-			//
+        var onError = function ( xhr ) { };
 
-			function render() {
+        const dracoLoader = new DRACOLoader();
+			dracoLoader.setDecoderPath( 'bulid/gltf/' );
 
-				renderer.render( scene, camera );
+			const loader = new GLTFLoader();
+			loader.setDRACOLoader( dracoLoader );
+			loader.load( 'obj/LittlestTokyo.glb', function ( gltf ) {
+               document.getElementById('test').innerHTML = 'loader';
+				                var axes=new THREE.AxisHelper(10);
+                scene.add(axes);
+				const model = gltf.scene;
+				model.position.set( 1, 1, 1 );
+				model.scale.set( 0.005, 0.005, 0.005 );
 
-			}
+				scene.add( model );
 
-		</script>
+				mixer = new THREE.AnimationMixer( model );
+				mixer.clipAction( gltf.animations[ 0 ] ).play();
 
-	</body>
-</html>
+				animate();
+				
+
+			}, onProgress, onError);
+
+
+</script></body>
