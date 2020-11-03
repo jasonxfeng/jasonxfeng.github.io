@@ -206,11 +206,11 @@ ARjs.MarkerControls.prototype._initArtoolkit = function(){
 		// listen to the event
 		arController.addEventListener('getMarker', function(event){
 			if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
-				if( artoolkitMarkerId === null )	return
+				if( artoolkitMarkerId === null )	onMarkerFound(event) //1
 				if( event.data.marker.idPatt === artoolkitMarkerId ) onMarkerFound(event)
 			}else if( event.data.type === artoolkit.BARCODE_MARKER && _this.parameters.type === 'barcode' ){
 				// console.log('BARCODE_MARKER idMatrix', event.data.marker.idMatrix, artoolkitMarkerId )
-				if( artoolkitMarkerId === null )	return
+				if( artoolkitMarkerId === null )	onMarkerFound(event) //1
 				if( event.data.marker.idMatrix === artoolkitMarkerId )  onMarkerFound(event)
 			}else if( event.data.type === artoolkit.UNKNOWN_MARKER && _this.parameters.type === 'unknown'){
 				onMarkerFound(event)
