@@ -113,10 +113,12 @@
 
     // update artoolkit on every frame
     onRenderFcts.push(function(){
-        if( arToolkitSource.ready === false )	return
+        if( arToolkitSource.ready === false ){	
+	document.getElementById('test').innerHTML = 'NO MARKER'	
+		return}
 
         arToolkitContext.update( arToolkitSource.domElement )
-
+  document.getElementById('test').innerHTML = 'YES MARKER';
         // update scene.visible if the marker is seen
         scene.visible = camera.visible
 
