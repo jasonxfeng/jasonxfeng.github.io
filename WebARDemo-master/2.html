@@ -27,6 +27,7 @@
 	                import { OrbitControls } from './bulid/OrbitControls.js';
 	
         var obj;
+	var aaa;	
 	//fps监测
 	    var stats = initStats();
 
@@ -92,6 +93,8 @@
         arToolkitSource.onResize()
         arToolkitSource.copySizeTo(renderer.domElement)
         if( arToolkitContext.arController !== null ){
+		a++;
+		document.getElementById('test').innerHTML = a;
             arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
         }
     }
