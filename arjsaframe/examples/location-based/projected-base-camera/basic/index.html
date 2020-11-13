@@ -2,13 +2,17 @@
 
 <html>
     <head>
-        <title> 333 AR.js Basic Projected Camera Example</title>
+        <title>AR.js Basic Projected Camera Example</title>
         <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
         <script src='../../../../build/aframe-ar-nft.js'></script>
     </head>
-    <body style='margin: 0; overflow: hidden'>
-        <a-scene embedded arjs='trackingMethod: best; sourceType: webcam; debugUIEnabled: false'>
-            <a-camera
+    <body>
+     <div id='1'>
+         <h2> 1111 </h2>
+        </div>
+    <a-scene embedded arjs>
+    <a-camera
+    look-controls-enabled='false'
     id="camera"
     position="0 8 8"
     raycaster="objects: .cantap"
