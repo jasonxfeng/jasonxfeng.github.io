@@ -25,12 +25,7 @@
 		embedded
 		arjs='sourceType: webcam; debugUIEnabled: false;'>
 
-        <a-box
-            clickhandler
-            material="color: red;"
-            scale="80 80 80"
-            gps-entity-place="latitude: your-latitude>; longitude: your-longitude;">
-        </a-box>
+	<a-entity id="box" clickhandler gps-entity-place="latitude: your-latitude>; longitude: your-longitude;" scale="80 80 80" position="0 10 4" geometry="primitive: box" material="color: blue" ></a-entity>
 
         <a-camera gps-camera rotation-reader>
 		</a-camera>
