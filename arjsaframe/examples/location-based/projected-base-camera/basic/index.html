@@ -20,11 +20,19 @@
     </head>
  <body style='margin: 0; overflow: hidden'>
         <a-scene vr-mode-ui='enabled: false' embedded arjs='sourceType: webcam; debugUIEnabled: false'>
-             <a-camera gps-camera alert='true' rotation-reader>
-            <a-box gps-entity-place="latitude: your-latitude>; longitude: your-longitude;" material='color: red' scale='10 10 10'></a-box>
-            <a-box gps-entity-place="latitude: your-latitude>; longitude: your-longitude;" material='color: yellow' scale='10 10 10'></a-box>
-            <a-box gps-entity-place="latitude: your-latitude>; longitude: your-longitude;" material='color: green' scale='10 10 10'></a-box> 
-		</a-camera>
+		
+		
+		        <a-camera id='camera1' near="0.1" far="50000" fov="80"
+            gps-camera='simulateLatitude: 51.049; simulateLongitude: -0.723'
+            rotation-reader>
+        </a-camera>
+
+        <!-- This is perhaps 1.5 kilometres from the starting point.
+             With videoTexture: false it does not appear.
+             With videoTexture: true, it does. -->
+        <a-box gps-entity-place='latitude: 51.0597; longitude: -0.7171' material='color: yellow'
+            position='0 90 0' scale='100 100 100'>
+        </a-box>
         </a-scene>
     </body>
 </html>
