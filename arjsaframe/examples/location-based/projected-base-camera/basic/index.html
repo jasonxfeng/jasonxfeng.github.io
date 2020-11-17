@@ -9,17 +9,11 @@
    <body style="margin : 0px; overflow: hidden;">
     <a-scene 
              embedded
-             arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;"
-             vr-mode-ui="enabled: false;"
-             >
-   <a-anchor hit-testing-enabled='true' hit-testing-render-debug='true'>
-
-			<!-- Add your augmented reality here -->
+             arjs="trackingMethod: best">
+                <a-anchor hit-testing-enabled='true' hit-testing-render-debug='true'>
 			<a-box scale='80 80 80' position='0 2 5' material='opacity: 1; side:double; color:red;'>
 			</a-box>
-
 		</a-anchor>
-        <a-camera position='0 8 8'></a-camera>
         </a-scene>
     </body>
 </html>
