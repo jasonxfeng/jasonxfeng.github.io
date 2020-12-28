@@ -6,6 +6,29 @@ AFRAME.registerComponent('tap-place-cursor',{
     this.ground = document.getElementById('ground')
     this.rayOrigin = new THREE.Vector2(0, 0)
     this.cursorLocation = new THREE.Vector3(0, 0, 0)
+  this.el.sceneEl.addEventListener('click', (event) => {
+      // Create new entity for the new object
+      const newElement = document.createElement('a-entity')
+      // Spawn model at location of the cursor
+      newElement.setAttribute('position', this.el.object3D.position)
+      const randomYRotation = Math.random() * 360
+      newElement.setAttribute('rotation', `0 ${randomYRotation} 0`)
+      newElement.setAttribute('visible', 'false')
+      newElement.setAttribute('scale', '0.0001 0.0001 0.0001')
+      newElement.setAttribute('gltf-model', '#treeModel')
+      newElement.setAttribute('shadow', {receive: false})
+      this.el.sceneEl.appendChild(newElement)
+      newElement.addEventListener('model-loaded', () => {
+        // Once the model is loaded, we are ready to show it popping in using an animation
+        newElement.setAttribute('visible', 'true')
+        newElement.setAttribute('animation', {
+          property: 'scale',
+          to: '10 10 10',
+          easing: 'easeOutElastic',
+          dur: 800,
+        })
+      })
+    })
     },
   tick() {
     // Raycast from camera to 'ground'
