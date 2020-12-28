@@ -5,32 +5,12 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>GeoAR.js demo</title>
     <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
-
+    <script src="tap.js"></script>
     <script src='../../build/aframe-ar-nft.js'></script>
 </head>
 
 <body style='margin: 0; overflow: hidden;'>
-AFRAME.registerComponent('tap-place-cursor',{
- init() {
-    this.raycaster = new THREE.Raycaster()
-    this.camera = document.getElementById('camera')
-    this.threeCamera = this.camera.getObject3D('camera')
-    this.ground = document.getElementById('ground')
-    },
-  tick() {
-    // Raycast from camera to 'ground'
-    this.raycaster.setFromCamera(this.rayOrigin, this.threeCamera)
-    const intersects = this.raycaster.intersectObject(this.ground.object3D, true)
-    if (intersects.length > 0) {
-      const [intersect] = intersects
-      this.cursorLocation = intersect.point
-    }
-    this.el.object3D.position.y = 0.1
-    this.el.object3D.position.lerp(this.cursorLocation, 0.4)
-    this.el.object3D.rotation.y = this.threeCamera.rotation.y
-  },
-}
-});
+
     <a-scene
         vr-mode-ui="enabled: false"
 		embedded
