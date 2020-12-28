@@ -23,7 +23,7 @@ AFRAME.registerComponent('tap-place-cursor',{
         newElement.setAttribute('visible', 'true')
         newElement.setAttribute('animation', {
           property: 'scale',
-          to: '10 10 10',
+          to: '1 1 1',
           easing: 'easeOutElastic',
           dur: 800,
         })
