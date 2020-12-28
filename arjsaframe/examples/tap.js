@@ -4,6 +4,8 @@ AFRAME.registerComponent('tap-place-cursor',{
     this.camera = document.getElementById('camera')
     this.threeCamera = this.camera.getObject3D('camera')
     this.ground = document.getElementById('ground')
+    this.rayOrigin = new THREE.Vector2(0, 0)
+    this.cursorLocation = new THREE.Vector3(0, 0, 0)
     },
   tick() {
     // Raycast from camera to 'ground'
