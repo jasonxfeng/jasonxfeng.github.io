@@ -19,5 +19,4 @@ AFRAME.registerComponent('tap-place-cursor',{
     this.el.object3D.position.lerp(this.cursorLocation, 0.4)
     this.el.object3D.rotation.y = this.threeCamera.rotation.y
   },
-}
 });
